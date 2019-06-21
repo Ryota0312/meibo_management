@@ -1,0 +1,7 @@
+[package]
+name = "meibo_rust"
+version = "0.1.0"
+authors = ["Ryota Nishi <nishi@swlab.cs.okayama-u.ac.jp>"]
+edition = "2018"
+
+[dependencies]
