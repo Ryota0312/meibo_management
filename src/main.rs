@@ -92,7 +92,7 @@ impl<'a> Command<'a> {
                     3 => profile.sort_by(|a, b| a.date.cmp(&b.date)),
                     4 => profile.sort_by(|a, b| a.addr.cmp(&b.addr)),
                     5 => profile.sort_by(|a, b| a.note.cmp(&b.note)),
-                    _ => return Err(failure::err_msg("%S argument out of range(1-5)")),
+                    _ => return Err(failure::err_msg("%S argument is out of range.")),
                 }
             },
             Command::Find(word) => {
