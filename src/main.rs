@@ -3,6 +3,7 @@ use std::io::{Write, BufRead, BufReader};
 use chrono::NaiveDate;
 use failure;
 
+// Profile の定義
 struct Profile {
     id: u32,
     name: String,
@@ -25,7 +26,7 @@ impl Profile {
     }
 
     // CSV 形式の文字列を返す
-    fn get_csv(&self) -> String {
+    fn to_csv(&self) -> String {
         format!("{},{},{},{},{}", self.id, self.name, self.date.format("%Y-%m-%d").to_string(), self.addr, self.note)
     }
 
@@ -36,6 +37,7 @@ impl Profile {
     }
 }
 
+// コマンド定義
 enum Command<'a> {
     Quit,
     Check,
@@ -72,7 +74,7 @@ impl<'a> Command<'a> {
             Command::Write(filename) => {
                 let mut f = File::create(filename)?;
                 for p in profile.iter() {
-                    writeln!(f, "{}", p.get_csv())?;
+                    writeln!(f, "{}", p.to_csv())?;
                 }
             },            
             Command::Read(filename) => {
@@ -108,6 +110,7 @@ impl<'a> Command<'a> {
     }
 }
 
+//　コマンド実行
 fn exec_command(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error> {
     let args: Vec<&str> = line.trim_end().split(' ').collect();
     let command = match args[0] {
@@ -148,6 +151,7 @@ fn exec_command(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::E
     command.call(profile)
 }
 
+// 名簿データ登録
 fn register(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error> {
     let v: Vec<&str> = line.trim_end().splitn(5, ',').collect();
     if v.len() < 5 {
@@ -167,6 +171,7 @@ fn register(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error
 }
 
 fn parse_line(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error> {
+    // '%'から始まる文字列はコマンド，それ以外はCSVデータとして処理
     if line.starts_with("%") {
         exec_command(&line, profile)
     } else {
