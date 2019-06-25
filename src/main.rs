@@ -1,10 +1,11 @@
 use std::fs::File;
 use std::io::{Write, BufRead, BufReader};
+use chrono::NaiveDate;
 
 struct Profile {
     id: u32,
     name: String,
-    date: String,
+    date: NaiveDate,
     addr: String,
     note: String,
 }
@@ -15,19 +16,19 @@ impl Profile {
         println!("-----");
         println!("ID: {}", self.id);
         println!("Name: {}", self.name);
-        println!("Date: {}", self.date);
+        println!("Date: {}", self.date.format("%Y-%m-%d").to_string());
         println!("Addr: {}", self.addr);
         println!("Note: {}", self.note);
         println!("-----");
     }
 
     fn get_csv(&self) -> String {
-        format!("{},{},{},{},{}", self.id, self.name, self.date, self.addr, self.note)
+        format!("{},{},{},{},{}", self.id, self.name, self.date.format("%Y-%m-%d").to_string(), self.addr, self.note)
     }
 
     fn is_match(&self, word: &str) -> bool {
         let id: &str = &self.id.to_string();
-        (id == word) || (self.name == word) || (self.date == word) || (self.addr == word) || (self.note == word)
+        (id == word) || (self.name == word) || (self.date.format("%Y-%m-%d").to_string() == word) || (self.addr == word) || (self.note == word)
     }
 }
 
@@ -117,7 +118,7 @@ fn register(line: &str, profile: &mut Vec<Profile>) {
     let p = Profile {
         id: v[0].parse().unwrap(),
         name: v[1].to_string(),
-        date: v[2].to_string(),
+        date: NaiveDate::parse_from_str(&v[2].to_string(), "%Y-%m-%d").unwrap(),
         addr: v[3].to_string(),
         note: v[4].to_string(),
     };

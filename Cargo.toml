@@ -5,3 +5,4 @@ authors = ["Ryota Nishi <nishi@swlab.cs.okayama-u.ac.jp>"]
 edition = "2018"
 
 [dependencies]
+chrono = "0.4.6"
