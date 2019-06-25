@@ -62,7 +62,7 @@ impl<'a> Command<'a> {
                         p.print_profile();
                     }
                 } else if n < 0 {
-                    for p in profile.iter().rev().take(n.abs() as usize) {
+                    for p in profile.iter().rev().take(n.abs() as usize).collect::<Vec<_>>().iter().rev() {
                         p.print_profile();
                     }
                 } else if n == 0 {
