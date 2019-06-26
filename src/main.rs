@@ -14,6 +14,16 @@ struct Profile {
 
 // Profile のメソッド
 impl Profile {
+    fn new(v: Vec<&str>) -> Result<Profile, failure::Error> {
+        Ok(Profile {
+            id: v[0].parse()?,
+            name: v[1].to_string(),
+            date: NaiveDate::parse_from_str(&v[2].to_string(), "%Y-%m-%d")?,
+            addr: v[3].to_string(),
+            note: v[4].to_string(),
+        })
+    }
+    
     // 成形して表示
     fn print_profile(&self) {
         println!("-----");
@@ -157,12 +167,9 @@ fn register(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error
     if v.len() < 5 {
         Err(failure::err_msg("CSV data must include at least 5 elements."))
     } else {
-        let p = Profile {
-            id: v[0].parse()?,
-            name: v[1].to_string(),
-            date: NaiveDate::parse_from_str(&v[2].to_string(), "%Y-%m-%d")?,
-            addr: v[3].to_string(),
-            note: v[4].to_string(),
+        let p = match Profile::new(v) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
         };
         p.print_profile();
         profile.push(p);
