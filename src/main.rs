@@ -122,7 +122,7 @@ impl<'a> Command<'a> {
 
 //　コマンド実行
 fn exec_command(line: &str, profile: &mut Vec<Profile>) -> Result<(), failure::Error> {
-    let args: Vec<&str> = line.trim_end().split(' ').collect();
+    let args: Vec<&str> = line.trim_end().splitn(2, ' ').collect();
     let command = match args[0] {
         "%Q" => Command::Quit,
         "%C" => Command::Check,
