@@ -93,7 +93,7 @@ impl<'a> Command<'a> {
                 for line in f.lines().filter_map(|result| result.ok()) {
                     match parse_line(&line, profile) {
                         Ok(_) => {},
-                        Err(e) => println!("Error: {}", e),
+                        Err(e) => return Err(e),
                     }
                 }
             },
